@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>To Do List</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="tasks.css">
+
+    <!-- JQuery, Bootstrap -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <!-- Scripts personalizados -->
+    <script src="script.js"></script>
+
+</head>
+<body>
+
+<!-- Contenedor -->
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- Título -->
+        <div class="col-md-12">
+            <h1>JS To Do List</h1>
+        </div>
+
+        <!-- Formulario : Agregar Tarea -->
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                <!-- Formulario -->
+                <form role="form" id="agregar_tarea_form" >
+                    <label>
+
+                        <!-- Caja de texto -->
+                        <input type="text" class="form-control"
+                               id="nuevo_item_text" name="nuevo_item_text"
+                               placeholder="¿Qué necesita hacer?">
+
+                        <!-- Botón de Agregar -->
+                        <button type="button" 
+                              id="btn_agregar"
+                              class="btn btn-primary add_button">
+                            Agregar
+                        </button>
+
+                    </label>
+                </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Lista de tareas -->
+        <div class="col-md-12">
+            <section class="panel panel-default tasks-widget">
+
+                <!-- Botones en la parte superior -->
+                <div class="panel-heading">
+
+                    <button id="btn_marcar_todos" class="btn btn-success btn-xs">Marcar todos terminados <i class=" fa fa-check"></i></button>
+                    <button id="btn_borrar_terminados" class="btn btn-danger btn-xs">Borrar Terminados <i class="fa fa-trash-o "></i></button>
+
+                </div>
+
+                <!-- Lista de Tareas -->
+                <!-- Las tareas de ejemplo son sobre-escritas por las funciones JS -->
+                <div class="panel-body">
+                    <ul class="task-list" id="task-list" >
+
+                        <!-- Ejemplo Tarea 1 -->
+                        <li>
+                            <div class="task-checkbox">
+                                <input type="checkbox" class="list-child" value="">
+                            </div>
+                            <div class="task-title">
+                                <!-- Texto de la Tarea -->
+                                <span class="task-title-sp">Terminar la página Personal</span>
+                                <div class="pull-right">
+                                    <!-- Botón de cambiar selección -->
+                                    <button class="btn btn-success btn-xs" onclick="cambiarMarcaTarea(0);">
+                                        <i class=" fa fa-check"></i>
+                                    </button>
+                                    <!-- Botón de eliminar tarea -->
+                                    <button class="btn btn-danger btn-xs">
+                                        <i class="fa fa-trash-o "></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+
+                        <!-- Ejemplo Tarea 2 -->
+                        <li>
+                            <div class="task-checkbox">
+                                <input type="checkbox" class="list-child" value="">
+                            </div>
+                            <div class="task-title">
+                                <span class="task-title-sp">Terminar el tema de Bootstrap</span>
+                                <div class="pull-right">
+                                    <button class="btn btn-success btn-xs" onclick="cambiarMarcaTarea(1);">
+                                        <i class=" fa fa-check"></i>
+                                    </button>
+                                    <button class="btn btn-danger btn-xs">
+                                        <i class="fa fa-trash-o "></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+            </section>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+// == funciones adicionales
+
+function marcarTodosTerminados() {
+  for (var i = 0; i < tareas.length; i ++ ) {
+    tareas[i].terminado = true;
+  }
+}
+
+function borrarTerminados() {
+  var tareasAEliminar = [];
+  for (var i = 0; i < tareas.length; i ++ ) {
+    if ( tareas[i].terminado == true) {
+      tareasAEliminar.push( i );
+    }
+  }
+  tareasAEliminar.reverse();
+  for (var i = 0; i < tareasAEliminar.length; i ++ ) {
+    // tareas.splice( tareasAEliminar[i], 1 );
+    eliminarTarea( tareasAEliminar[i] );
+  }
+}
+
+function cambiarMarcaTarea( numero_tarea ) {
+  if ( numero_tarea > -1 && numero_tarea < tareas.length ) {
+    if ( tareas[ numero_tarea ].terminado ) {
+      tareas[ numero_tarea ].terminado = false;
+    } else {
+      tareas[ numero_tarea ].terminado = true;      
+    }
+  }
+  mostrarTareasEnTabla();
+}
+
+function eliminarTareaTabla( numero_tarea ) {
+  eliminarTarea( numero_tarea );
+  mostrarTareasEnTabla();
+}
+
+// == asigna los eventos
+
+// al cargar la página
+$(document).ready(function(){
+
+  // ajusta el boton de agregar
+  $('#btn_agregar').click( 
+    function () {
+      var texto_tarea = $("#nuevo_item_text").val();
+      agregarTarea( texto_tarea );
+      mostrarTareasEnTabla();    
+    }
+  );
+  
+  // ajusta el boton de marcar todos
+  $('#btn_marcar_todos').click( 
+    function () {
+      marcarTodosTerminados();
+      mostrarTareasEnTabla();    
+    }
+  );
+
+  // ajusta el boton de borrar terminados
+  $('#btn_borrar_terminados').click( 
+    function () {
+      borrarTerminados();
+      mostrarTareasEnTabla();    
+    }
+  );
+  
+});
+
+</script>
+
+</body>
+</html>

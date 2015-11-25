@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>To Do List</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="tasks.css">
+
+    <!-- JQuery, Bootstrap -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <!-- Handlebars -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
+
+    <!-- Scripts personalizados -->
+    <script src="script.js"></script>
+
+</head>
+<body>
+
+<!-- Plantilla para la lista de tareas -->
+<script id="tareas-template" type="text/x-handlebars-template">
+{{#each this}}
+ <li>
+      <div class="task-checkbox">
+          <input type="checkbox" 
+            class="list-child" 
+            {{#if terminado}}checked{{/if}}
+            value="">
+      </div>
+      <div class="task-title">
+          <!-- Texto de la Tarea -->
+          <span class="task-title-sp">{{tarea}}</span>
+          <div class="pull-right">
+              <!-- Botón de cambiar selección -->
+              <button class="btn btn-success btn-xs btn-cambiar">
+                  <i class=" fa fa-check"></i>
+              </button>
+              <!-- Botón de eliminar tarea -->
+              <button class="btn btn-danger btn-xs btn-eliminar">
+                  <i class="fa fa-trash-o "></i>
+              </button>
+          </div>
+      </div>
+  </li>
+{{/each}}
+</script>
+
+
+<!-- Contenedor -->
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- Título -->
+        <div class="col-md-12">
+            <h1>JS To Do List</h1>
+        </div>
+
+        <!-- Formulario : Agregar Tarea -->
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                <!-- Formulario -->
+                <form role="form" id="agregar_tarea_form" >
+                    <label>
+
+                        <!-- Caja de texto -->
+                        <input type="text" class="form-control"
+                               id="nuevo_item_text" name="nuevo_item_text"
+                               placeholder="¿Qué necesita hacer?">
+
+                        <!-- Botón de Agregar -->
+                        <button type="button" 
+                              id="btn_agregar"
+                              class="btn btn-primary add_button">
+                            Agregar
+                        </button>
+
+                    </label>
+                </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Lista de tareas -->
+        <div class="col-md-12">
+            <section class="panel panel-default tasks-widget">
+
+                <!-- Botones en la parte superior -->
+                <div class="panel-heading">
+
+                    <button id="btn_marcar_todos" class="btn btn-success btn-xs">Marcar todos terminados <i class=" fa fa-check"></i></button>
+                    <button id="btn_borrar_terminados" class="btn btn-danger btn-xs">Borrar Terminados <i class="fa fa-trash-o "></i></button>
+
+                </div>
+
+                <!-- Lista de Tareas -->
+                <div class="panel-body">
+                    <ul class="task-list" id="task-list" >
+                    </ul>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
